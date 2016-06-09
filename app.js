@@ -1,57 +1,52 @@
-var express = require('express');
-var path = require('path');
+//var path = require('path');
 //var favicon = require('serve-favicon');
 //var logger = require('morgan');
 //var cookieParser = require('cookie-parser');
+var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
-//var mongo = require('mongodb');
-//var monk = require('monk');
-//var db = monk('localhost:27017/codes');
-
-//var routes = require('./routes/index');
-//var users = require('./routes/users');
-var algoRoute = require('./routes/algorithms');
-
 var app = express();
 
+// mongoose
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function() {
 	console.log("connected to mongod server");
 });
-
 mongoose.connect('mongodb://localhost/www');
 
+// body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// routing
 var Algorithm = require('./models/algorithm');
 var Problem = require('./models/problem');
+var algoRoute = require('./routes/algorithms');
+
 require('./routes/api')(app, Algorithm, Problem);
+app.use('/algorithms', algoRoute);
+app.get('/', function(req, res) {
+	res.render('index');
+});
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', 'views');
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));
-
 //app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
-app.use('/algorithms', algoRoute);
-//app.use('/', routes);
-//app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+//app.use(function(req, res, next) {
+//  var err = new Error('Not Found');
+//  err.status = 404;
+//  next(err);
+//});
 
 // error handlers
 
