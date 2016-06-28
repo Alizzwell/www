@@ -60,4 +60,35 @@ module.exports = function(app, Algorithm, Problem) {
   app.get('/api/:number/:difficulty', function(req, res) {
 
   });
+  
+  
+  app.post('/api/demo/upload', function(req, res) {
+	  // call python script (Async) //
+	  (function when_py_done_callback() {
+		  // completely created binary.
+		  
+		  (function when_binary_print_output() {
+			  // binary print output...
+			  
+			  // output -> json data
+			  var jsonData = {
+				  targets: [
+					{ name: "A", type: "integer", isArray: true, length: 3 },
+					{ name: "B", type: "integer" }
+				  ],
+				  steps: [
+					{ "A": [ 1, 0, 0 ], "B": 0 },
+					{ "A": [ 1, 2, 0 ], "B": 0 },
+					{ "A": [ 1, 2, 3 ], "B": 1 },
+					{ "A": [ 3, 2, 3 ], "B": 0 },
+					{ "A": [ 3, 2, 1 ], "B": 1 }
+				  ]
+			  };
+			  
+			  res.status(201).json(jsonData);
+			  
+		  })();
+		  
+	  })();
+  });
 };
