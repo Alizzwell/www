@@ -4,7 +4,8 @@
 <head>
 	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 	<script src="/javascripts/jquery-2.2.4.min.js"></script>
-	<script src="/javascripts/temp.js"></script>
+	<script src="/javascripts/d3.min.js"></script>
+	<script src="/javascripts/array.visualize.js"></script>
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
@@ -40,20 +41,24 @@
 		<div class="wrapper">
 			<div class="row">
 				<div class="col-md-3" id="code_area">
-					<p>input</p>
+					<span>input</span>
 					<textarea style="width:100%;"></textarea>
-					<p>code</p>
-					<textarea style="width:100%; height: 500px;"></textarea>
+					<span>code</span>
+					<textarea id="txtCode" style="width:100%; height: 500px;">
+					</textarea>
 					<div>
 						<input type="button" value="Upload"/>
-						<input type="button" value="Step"/>
+						<input type="button" id="btnStep" value="Step"/>
 					</div>
 				</div>
 				<div class="col-md-1"></div>
-				<div class="col-md-8" id="canvas" style="background-color: green;">.col-md-8</div>
+				<div class="col-md-8" id="canvas">
+				</div>
 			</div>
 		</div>
 	</div>
+
+	<script src="/javascripts/demo.js"></script>
 </body>
 
 </html>
