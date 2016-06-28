@@ -5,3 +5,7 @@
 1. root 폴더에 data 폴더 생성
 2. mongod 실행시 다음과 같이 실행<br>
 `$ mongod --dbpath data`
+
+
+### Supervisor 모듈 설치
+`npm install -g supervisor`
