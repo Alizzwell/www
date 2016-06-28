@@ -30,6 +30,11 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
+// for demo
+app.get('/demo', function(req, res) {
+	res.render('demo');
+});
+
 // view engine setup
 app.set('views', 'views');
 app.set('view engine', 'ejs');
