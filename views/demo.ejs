@@ -6,35 +6,12 @@
 	<script src="/javascripts/jquery-2.2.4.min.js"></script>
 	<script src="/javascripts/d3.min.js"></script>
 	<script src="/javascripts/array.visualize.js"></script>
+	<script src="/javascripts/this-play.js"></script>
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">This - Play</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="#">알고리즘</a></li>
-          <li><a href="#">문제</a></li>
-          <li><a href="#">개인 코드</a></li>
-		  <li><a href="#">Demo</a><li>
-        </ul>
-        <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" placeholder="Search...">
-					<button class="btn btn-default">검색</button>
-        </form>
-      </div>
-    </div>
-  </nav>
+	<%- include nav.ejs %>
 
 	<div id="body" class="container-fluid">
 		<h1 class="page-header">Demo</h1>
@@ -42,12 +19,11 @@
 			<div class="row">
 				<div class="col-md-3" id="code_area">
 					<span>input</span>
-					<textarea style="width:100%;"></textarea>
+					<textarea id="txtInput" style="width:100%;"></textarea>
 					<span>code</span>
-					<textarea id="txtCode" style="width:100%; height: 500px;">
-					</textarea>
+					<textarea id="txtCode" style="width:100%; height: 500px;"></textarea>
 					<div>
-						<input type="button" value="Upload"/>
+						<input type="button" id="btnUpload" value="Upload"/>
 						<input type="button" id="btnStep" value="Step"/>
 					</div>
 				</div>
