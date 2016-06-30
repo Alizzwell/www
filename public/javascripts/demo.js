@@ -39,129 +39,131 @@ function selectTextareaLine(tarea,lineNum) {
     return false;
 }
 
+var scheduler;
+var step_index;
+var steps;
+var updateArr;	// 이 부분이 scheduler 내 에서 모델로 제공되고, canvas가 이용하는 부분은 모델로 바인딩 하도록 해야함
 
-var line = [6, 7, 8, 9];
-var i = 0;
+function initScheduler(jsonData) {
+	scheduler = new this_play.Scheduler();
+	scheduler.addTarget(jsonData.targets);
 
-(function () {
-	var text = `
-#include <stdio.h>
+	scheduler.targets['A'].on('change', function (before, after) {
+		updateArr['A'] = [];
 
-int A[6] = {9, 8, 7, 6, 5, 4};
+		before.forEach(function (d, i) {
+			if (d != after[i]) {
+				updateArr['A'].push([i, after[i]]);
+			}
+		});
 
-int main() {
-	for (int i = 0; i < 6; )
-		for (int j = 0; j < i; j++)
-	
-	return 0;
+		redraw();
+	});
+
+	step_index = 0;
+	steps = jsonData.steps;
+
+	var initData = {};
+	initData[jsonData.targets[0].name] = jsonData.targets[0].init;
+	initCanvas(initData);
 }
-`;
 
-	$('#txtCode').text(text);
-})();
 
-/*
-var data = [
-	[0, 0, 0],
-	[1, 0, 0],
-	[1, 2, 0],
-	[1, 2, 3],
-	[3, 2, 1]
-]
-
-var hl = [
-	[],
-	[0],
-	[1],
-	[2],
-	[0, 2],
-]
-*/
-
-var initData = {
-	A: [9, 8, 7, 6, 5, 4]
-};
-
-var updateData = [
-	{line: 6, diff: {A: [[0, 8], [1, 9]]}},
-	{line: 6, diff: {A: [[1, 7], [2, 9]]}},
-	{line: 6, diff: {A: [[2, 6], [3, 9]]}},
-	{line: 6, diff: {A: [[3, 5], [4, 9]]}},
-	{line: 6, diff: {A: [[4, 4], [5, 9]]}},
-	{line: 6, diff: {A: [[0, 7], [1, 8]]}},
-	{line: 6, diff: {A: [[1, 6], [2, 8]]}},
-	{line: 6, diff: {A: [[2, 5], [3, 8]]}},
-	{line: 6, diff: {A: [[3, 4], [4, 8]]}},
-	{line: 6, diff: {A: [[0, 6], [1, 7]]}},
-	{line: 6, diff: {A: [[1, 5], [2, 7]]}},
-	{line: 6, diff: {A: [[2, 4], [3, 7]]}},
-	{line: 6, diff: {A: [[0, 5], [1, 6]]}},
-	{line: 6, diff: {A: [[1, 4], [2, 6]]}},
-	{line: 6, diff: {A: [[0, 4], [1, 5]]}}
-];
-
-var svg = d3.select('#canvas').append('svg').attr('height', 100).attr('width', 900);
-var options = { fontsize: 45, speed: 250 };
-var v = illustrateArray(initData['A'], svg, options);
-
-var svg2 = d3.select('#canvas').append('svg')
-	.attr("height", 600)
-	.attr("width", 900);
+$('#btnUpload').on('click', function () {
+	var inputData = $('#txtInput').val();
+	var userCode = $('#txtCode').val();
 	
-var graphData = JSON.parse(JSON.stringify(initData));
-var graph = svg2.selectAll('g')
-	.data(graphData['A'])
-	.enter()
-	.append('g')
-	.attr("transform", function(d, i) { return "translate(" + (i * 60) + ",0)"; });
+	$.post('/api/demo/upload', { inputData: inputData, userCode: userCode }, function (data) {
+		initScheduler(data);
+	});
+});
 
-graph.append("rect")
-	.attr("width", 50)
-	.attr("height", function(d) {return d * 50;})
-	.attr("y", function(d) {return 500 - d * 50;})
-	.attr("fill", "red");
-graph.append("text")
-	.text(function(d) { return d; })
-	.attr("y", 540)
-	.attr("x", 25)
-	.attr('font-size', 25)
-	.attr('text-anchor', 'middle');
-
-var h = [];
-var graphH = [];
 
 $('#btnStep').on('click', function () {
-	while (graphH.length > 0)
-		graphH.pop();
-	
-	while (h.length > 0) {
-		h.pop().destroy();
+	var step = steps[step_index];
+	if (!step) {
+		return;
 	}
-	
 
-	if (!updateData[i]) return;
-	selectTextareaLine(document.getElementById('txtCode'), updateData[i].line);
+	selectTextareaLine(document.getElementById('txtCode'), step.line);
 
-	var updateArr = updateData[i++].diff['A'];
-	for (j = 0; j < updateArr.length; j++)
-		v.splice(updateArr[j][0], updateArr[j][1]);
+	updateArr = {};
+	scheduler.step(step.status);
 
-	updateArr.forEach(function (update) {
-		h.push(v.highlight(update[0]));
+	step_index++;
+});
+
+
+
+/* ---- Canvas module ---- */
+var arrayData;
+var charData;
+var chart;
+var arrayH = [];
+var chartH = [];
+
+function initCanvas(initData) {
+	d3.select('#canvas').html('');
+
+	var svg = d3.select('#canvas').append('svg').attr('height', 100).attr('width', 900);
+	var options = { fontsize: 45, speed: 250 };
+	arrayData = illustrateArray(initData['A'], svg, options);
+
+	var svg2 = d3.select('#canvas').append('svg')
+	.attr("height", 600)
+	.attr("width", 900);
+		
+	charData = JSON.parse(JSON.stringify(initData));
+	chart = svg2.selectAll('g')
+		.data(charData['A'])
+		.enter()
+		.append('g')
+		.attr("transform", function(d, i) { return "translate(" + (i * 60) + ",0)"; });
+
+	chart.append("rect")
+		.attr("width", 50)
+		.attr("height", function(d) {return d * 50;})
+		.attr("y", function(d) {return 500 - d * 50;})
+		.attr("fill", "red");
+	chart.append("text")
+		.text(function(d) { return d; })
+		.attr("y", 540)
+		.attr("x", 25)
+		.attr('font-size', 25)
+		.attr('text-anchor', 'middle');
+
+	arrayH = [];
+	chartH = [];
+}
+
+function redraw() {
+	while (arrayH.length > 0) {
+		arrayH.pop().destroy();
+	}
+
+	while (chartH.length > 0) {
+		chartH.pop();
+	}
+
+	for (j = 0; j < updateArr['A'].length; j++) {
+		arrayData.splice(updateArr['A'][j][0], updateArr['A'][j][1]);
+	}
+
+	updateArr['A'].forEach(function (update) {
+		arrayH.push(arrayData.highlight(update[0]));
 	});
 	
-	for (j = 0; j < updateArr.length; j++) {
-		graphData['A'][updateArr[j][0]] = updateArr[j][1];
-		graphH.push(updateArr[j][0]);
+	for (j = 0; j < updateArr['A'].length; j++) {
+		charData['A'][updateArr['A'][j][0]] = updateArr['A'][j][1];
+		chartH.push(updateArr['A'][j][0]);
 	}
-	console.log(graphData['A']);
-	console.log(graphH);
-	graph.data(graphData['A']);
+
+	chart.data(charData['A']);
 	
-	graph.select('rect')
+	chart.select('rect')
 		.attr('height', function(d) {return d * 50;})
 		.attr("y", function(d) {return 500 - d * 50;})
-		.attr("fill", function(d, i) { return graphH.indexOf(i) != -1 ? "orange" : "red"; });
-	graph.select('text')
+		.attr("fill", function(d, i) { return chartH.indexOf(i) != -1 ? "orange" : "red"; });
+	chart.select('text')
 		.text(function(d) { return d; })
-});
+}
