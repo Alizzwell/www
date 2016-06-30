@@ -63,6 +63,7 @@ module.exports = function(app, Algorithm, Problem) {
   
   
   app.post('/api/demo/upload', function(req, res) {
+
 	  // call python script (Async) //
 	  (function when_py_done_callback() {
 		  // completely created binary.
@@ -73,15 +74,74 @@ module.exports = function(app, Algorithm, Problem) {
 			  // output -> json data
 			  var jsonData = {
 				  targets: [
-					{ name: "A", type: "integer", isArray: true, length: 3 },
-					{ name: "B", type: "integer" }
+					{ name: "A", type: "integer", isArray: true, length: 6, init: [ 9, 8, 7, 6, 5, 4 ] }
 				  ],
 				  steps: [
-					{ "A": [ 1, 0, 0 ], "B": 0 },
-					{ "A": [ 1, 2, 0 ], "B": 0 },
-					{ "A": [ 1, 2, 3 ], "B": 1 },
-					{ "A": [ 3, 2, 3 ], "B": 0 },
-					{ "A": [ 3, 2, 1 ], "B": 1 }
+          { line: 6, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
+          
+          { line: 7, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
+          { line: 8, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
+          { line: 9, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
+          { line: 10, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
+          { line: 8, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
+          { line: 9, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
+          { line: 10, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
+          { line: 8, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
+          { line: 9, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
+          { line: 10, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
+          { line: 8, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
+          { line: 9, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
+          { line: 10, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
+          { line: 8, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
+          { line: 9, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
+          { line: 10, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
+          { line: 11, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
+
+          { line: 7, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
+          { line: 8, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
+          { line: 9, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
+          { line: 10, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
+          { line: 8, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
+          { line: 9, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
+          { line: 10, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
+          { line: 8, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
+          { line: 9, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
+          { line: 10, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
+          { line: 8, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
+          { line: 9, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
+          { line: 10, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
+          { line: 11, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
+
+          { line: 7, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
+          { line: 8, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
+          { line: 9, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
+          { line: 10, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
+          { line: 8, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
+          { line: 9, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
+          { line: 10, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
+          { line: 8, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
+          { line: 9, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
+          { line: 10, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
+          { line: 11, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
+
+          { line: 7, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
+          { line: 8, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
+          { line: 9, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
+          { line: 10, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
+          { line: 8, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
+          { line: 9, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
+          { line: 10, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
+          { line: 11, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
+
+          { line: 7, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
+          { line: 8, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
+          { line: 9, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
+          { line: 10, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
+          { line: 11, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
+
+          { line: 12, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
+
+          { line: 14, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } }
 				  ]
 			  };
 			  
