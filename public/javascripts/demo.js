@@ -69,14 +69,12 @@ function initScheduler(jsonData) {
 }
 
 
-$('#btnUpload').on('click', function () {
-	var inputData = $('#txtInput').val();
-	var userCode = $('#txtCode').val();
-	
+function upload(inputData, userCode, done) {	
 	$.post('/api/demo/upload', { inputData: inputData, userCode: userCode }, function (data) {
 		initScheduler(data);
+		done();
 	});
-});
+}
 
 
 $('#btnStep').on('click', function () {

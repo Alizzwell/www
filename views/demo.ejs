@@ -3,59 +3,86 @@
 
 <head>
 	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" type="text/css" href="http://codemirror.net/lib/codemirror.css"/>
+	
 	<script src="/javascripts/jquery-2.2.4.min.js"></script>
 	<script src="/javascripts/d3.min.js"></script>
 	<script src="/javascripts/array.visualize.js"></script>
 	<script src="/javascripts/this-play.js"></script>
-	<link rel="stylesheet" href="/stylesheets/style.css">
+	
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.3.js"></script>
+	<script src="http://codemirror.net/lib/codemirror.js"></script>
+	<script src="http://codemirror.net/mode/scheme/scheme.js"></script>
+      <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+      <script src="http://codemirror.net/mode/xml/xml.js"></script>
+	<script src="https://rawgithub.com/angular-ui/ui-codemirror/bower/ui-codemirror.min.js"></script>
+	
+	<script src="/javascripts/app.js"></script>
+	<script src="/javascripts/clike.js"></script>
+	
 </head>
 
-<body>
+<body ng-app="this-play.demo">
 	<%- include nav.ejs %>
 
 	<div id="body" class="container-fluid">
 		<h1 class="page-header">Demo</h1>
-		<div class="wrapper">
-			<div class="row">
-				<div class="col-md-3" id="code_area">
-					<span>input</span>
-					<textarea id="txtInput" style="width:100%;"></textarea>
-					<span>code</span>
-					<textarea id="txtCode" style="width:100%; height: 500px;"></textarea>
-					<script>
-						(function () {
-							var text = 
-'#include <stdio.h>\n\
-\n\
-int A[6] = {9, 8, 7, 6, 5, 4};\n\
-\n\
-int main() {\n\
-	for (int i = 0; i < 6; ) {\n\
-		for (int j = 0; j < i; j++) {\n\
-			if (A[j] > A[j + 1]) {\n\
-				swap(A[j], A[j + 1]);\n\
-			}\n\
-		}\n\
-	}\n\
-\n\
-	return 0;\n\
-}';
-							$('#txtCode').val(text);
-						})();
-					</script>
-					<div>
-						<input type="button" id="btnUpload" value="Upload"/>
-						<input type="button" id="btnStep" value="Step"/>
+		<div class="wrapper" ng-controller="DemoCtrl" ng-cloak>
+			<div  ng-hide="visualize">
+				<div class="row">
+					<div class="col-md-12">
+						<h4>Source Code</h4>
+						<div class="btn-group">
+							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-csrc'">C</label>
+							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-c++src'">C++</label>
+							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-java'">Java</label>
+						</div>
 					</div>
 				</div>
-				<div class="col-md-1"></div>
-				<div class="col-md-8" id="canvas">
+				<div class="row">
+					<div class="col-md-12">
+						<textarea ui-codemirror="cmOption" ng-model="cmModel"></textarea>
+					</div>
+				</div>
+				<div class="row" style="margin-top:20px;">
+					<div class="col-md-12">
+						<h4>Input Data</h4>
+						<input type="text" ng-model="input" class="form-control">
+					</div>
+				</div>
+				<div class="row" style="margin-top:50px; text-align:center;">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-primary" ng-model="input" ng-click=btnRunClick()
+							style="width:500px; height:50px;">Upload</button>
+					</div>
+				</div>
+			</div>
+			
+			<div ng-show="visualize">
+				<div class="row">
+					<div class="col-md-3" id="code_area">
+						<span>input</span>
+						<textarea id="txtInput" style="width:100%;"></textarea>
+						<span>code</span>
+						<textarea id="txtCode" style="width:100%; height: 500px;"
+						></textarea>
+						<div>
+							<input type="button" id="btnStep" value="Step"/>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-8" id="canvas">
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script src="/javascripts/demo.js"></script>
+	
 </body>
 
 </html>
