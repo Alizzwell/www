@@ -24,67 +24,124 @@
 	
 	<script src="/javascripts/app.js"></script>
 	<script src="/javascripts/clike.js"></script>
+	<script src="/javascripts/active-line.js"></script>
+	<script src="/javascripts/searchcursor.js"></script>
+	<script src="/javascripts/mark-selection.js"></script>
 	
 </head>
 
-<body ng-app="this-play.demo">
+<body ng-app="this-play.demo" >
 	<%- include nav.ejs %>
-
-	<div id="body" class="container-fluid">
-		<h1 class="page-header">Demo</h1>
+	<div  id="body" class="container-fluid">
 		<div class="wrapper" ng-controller="DemoCtrl" ng-cloak>
 			<div  ng-hide="visualize">
 				<div class="row">
 					<div class="col-md-12">
-						<h4>Source Code</h4>
-						<div class="btn-group">
-							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-csrc'">C</label>
-							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-c++src'">C++</label>
-							<label class="btn btn-primary" ng-model="cmOption.mode" uib-btn-radio="'text/x-java'">Java</label>
+							<label class="btn btn-primary">Menu</label>
+							<label class="btn btn-primary">순차정렬</label>
+							<label class="btn btn-primary">카테고리</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-12">
+						<h4>카테고리</h4>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="arrayChk"> Array
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="sortChk"> Sort
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="searchChk"> Search
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="listChk"> Linked List
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="treeChk"> Tree
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="graphChk"> Graph
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="dpChk"> Dynamic Programming
+							</label>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<textarea ui-codemirror="cmOption" ng-model="cmModel"></textarea>
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'array'" ng-click=btnAlgorClick()>
+								<img src="array.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Array<h4>
 					</div>
 				</div>
-				<div class="row" style="margin-top:20px;">
-					<div class="col-md-12">
-						<h4>Input Data</h4>
-						<input type="text" ng-model="input" class="form-control">
-					</div>
-				</div>
-				<div class="row" style="margin-top:50px; text-align:center;">
-					<div class="col-md-12">
-						<button type="button" class="btn btn-primary" ng-model="input" ng-click=btnRunClick()
-							style="width:500px; height:50px;">Upload</button>
-					</div>
-				</div>
-			</div>
-			
-			<div ng-show="visualize">
 				<div class="row">
-					<div class="col-md-3" id="code_area">
-						<span>input</span>
-						<textarea id="txtInput" style="width:100%;"></textarea>
-						<span>code</span>
-						<textarea id="txtCode" style="width:100%; height: 500px;"
-						></textarea>
-						<div>
-							<input type="button" id="btnStep" value="Step"/>
-						</div>
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'sort'" ng-click=btnAlgorClick()>
+								<img src="sort.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Sort<h4>
 					</div>
-					<div class="col-md-1"></div>
-					<div class="col-md-8" id="canvas">
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'search'" ng-click=btnAlgorClick()>
+								<img src="search.png" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Search<h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'list'" ng-click=btnAlgorClick()>
+								<img src="list.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>List<h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'tree'" ng-click=btnAlgorClick()>
+								<img src="tree.png" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Tree<h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'graph'" ng-click=btnAlgorClick()>
+								<img src="graph.png" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Graph<h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<label class="btn btn-default" ng-model="selectAlgor" uib-btn-radio="'dp'" ng-click=btnAlgorClick()>
+								<img src="dp.png" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+							</label>
+							<h4>Dynamic Programming<h4>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<script src="/javascripts/demo.js"></script>
-	
 </body>
-
 </html>

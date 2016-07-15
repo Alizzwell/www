@@ -35,6 +35,10 @@ app.get('/demo', function(req, res) {
 	res.render('demo');
 });
 
+app.get('/main', function (req, res) {
+	res.render('main');
+});
+
 // view engine setup
 app.set('views', 'views');
 app.set('view engine', 'ejs');

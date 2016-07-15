@@ -36,6 +36,12 @@ svg {
 
 }
 
+.CodeMirror-readonly .CodeMirror-cursor {
+  display: none !important
+}
+
+ .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;}
+
 .comma {fill:green;}
 .text {fill:blue;}
 .parens {fill:red;}
