@@ -17,13 +17,13 @@ mongoose.connect('mongodb://localhost/www');
 
 // body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routing
 var Algorithm = require('./models/algorithm');
 var Problem = require('./models/problem');
-var algoRoute = require('./routes/algorithms');
 
+var algoRoute = require('./routes/algorithms');
 require('./routes/api')(app, Algorithm, Problem);
 app.use('/algorithms', algoRoute);
 app.get('/', function(req, res) {
