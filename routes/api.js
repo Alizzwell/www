@@ -11,7 +11,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({
 	storage: storage,
-	limits: {fileSize: 1024}
+	limits: {fileSize: 1024 * 1024 * 3}
 }).single('thumb');
 
 /*
