@@ -40,12 +40,12 @@ module.exports = function(app, Algorithm, Problem) {
 
 	app.post('/api/algorithms', function(req, res) {
 		upload(req, res, function(err) {
-			// upload file size exceeded
-			if (err.code == "LIMIT_FILE_SIZE") {
-				res.json({"result": 3});
-				return;
-			}
-			else if (err) {
+			if (err) {
+				// upload file size exceeded
+				if (err.code == "LIMIT_FILE_SIZE") {
+					res.json({"result": 3});
+					return;
+				}
 				res.json({"result": 1});
 				return;
 			}
