@@ -1,4 +1,7 @@
 var multer = require('multer');
+var fs = require('fs');
+var util = require('util');
+var exec = require('child_process').exec;
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -23,7 +26,11 @@ result code
   4 : 0 or 2 more items(when update)
 */
 
-module.exports = function(app, Algorithm, Problem) {
+var filenameIndex = 1;
+var sourcePath = 'tmp/source code/';
+var testjsPath = 'public/code/';
+
+module.exports = function(app, Algorithm) {
 
 	
 	// algorithms
@@ -122,13 +129,82 @@ module.exports = function(app, Algorithm, Problem) {
 	});
 	
 	
-	// problem
-	app.get('/api/problems', function(req, res) {
-	
-	});
-	
-	
-	app.get('/api/:number/:difficulty', function(req, res) {
-	
+
+	/*
+	코드 업로드 & 실행 & json으로 response
+	*/
+	app.post('/api/execute', function(req, res) {
+		upload(req, res, function(err) {
+			if (req.body.targets.length == 0 ||
+				req.body.code === "" ||
+				req.body.input === "") {
+				res.json({"result": 1});
+				return;
+			}
+			
+			fs.writeFile(
+				sourcePath + filenameIndex + '.cpp',
+				req.body.code,
+				function (err) {
+					if (err) {
+						res.json({"result": 1});
+						return;
+					}
+					
+					fs.writeFile(
+						sourcePath + filenameIndex + '.txt',
+						req.body.input,
+						function(err) {
+							if (err) {
+								res.json({"result": 1});
+								return;
+							}
+							
+							// g++ 실행, 에러 처리
+							var cmd = util.format('g++ %s -o %s', 
+								sourcePath + filenameIndex + '.cpp',
+								sourcePath + filenameIndex + '.out');
+							exec(cmd, function(err, stdout, stderr) {
+								if (err) {
+									res.json({"result": 1});
+									return;
+								}
+								
+								// test.js 실행
+								var cmd = util.format('node %stest.js %s %s ',
+									testjsPath,
+									sourcePath + filenameIndex + '.cpp',
+									sourcePath + filenameIndex + '.out');
+								
+								cmd += '--targets ';
+								for (var i in req.body.targets) {
+									cmd += req.body.targets[i]
+									cmd += ' ';
+								}
+								
+								if (req.body.bps.length != 0) {
+									cmd += '--breaks ';
+									for (var i in req.body.bps) {
+										cmd += req.body.bps[i];
+										cmd += ' ';
+									}
+								}
+								
+								cmd += '--input ';
+								cmd += (sourcePath + filenameIndex + '.txt');
+								
+								exec(cmd, function(err, stdout, stderr) {
+									if (err) {
+										res.json({"result": 1});
+										return;
+									}
+									
+									filenameIndex++;
+									res.json(stdout);
+								});
+							});
+						});
+				});
+		});
 	});
 };

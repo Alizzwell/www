@@ -21,10 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routing
 var Algorithm = require('./models/algorithm');
-var Problem = require('./models/problem');
+//var Problem = require('./models/problem');
 
 var algoRoute = require('./routes/algorithms');
-require('./routes/api')(app, Algorithm, Problem);
+require('./routes/api')(app, Algorithm);
 app.use('/algorithms', algoRoute);
 app.get('/', function(req, res) {
 	res.render('index');
