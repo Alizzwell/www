@@ -198,6 +198,7 @@ module.exports = function(app, Algorithm) {
 			},
 			function (stdout, stderr, cb) {
 				filenameIndex++;
+				console.log("stdout: ", stdout);
 				res.json(stdout);
 			}
 		], function (err) {

@@ -39,6 +39,7 @@ app.set('view engine', 'ejs');
 //app.use(logger('dev'));
 //app.use(cookieParser());
 app.use(express.static('public'));
+app.use(express.static('tmp'));
 
 
 // catch 404 and forward to error handler
