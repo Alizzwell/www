@@ -21,10 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routing
 var Algorithm = require('./models/algorithm');
-var Problem = require('./models/problem');
+//var Problem = require('./models/problem');
 
 var algoRoute = require('./routes/algorithms');
-require('./routes/api')(app, Algorithm, Problem);
+require('./routes/api')(app, Algorithm);
 app.use('/algorithms', algoRoute);
 app.get('/', function(req, res) {
 	res.render('index');
@@ -48,6 +48,7 @@ app.set('view engine', 'ejs');
 //app.use(logger('dev'));
 //app.use(cookieParser());
 app.use(express.static('public'));
+app.use(express.static('tmp'));
 
 
 // catch 404 and forward to error handler
