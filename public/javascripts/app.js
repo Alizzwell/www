@@ -21,8 +21,8 @@ angular
 	};
 	
 	$scope.breakp = []; 
-	
 	$scope.page = 'select';
+	$scope.selectAlgor = '';
 	
 	$scope.chk = {
 		"array": true,
@@ -72,8 +72,6 @@ angular
 		}
 	});
 	
-	//editor.markText({line: 0, ch: 0}, {line: 1}, {className: "styled-background"});
-	
 	function makeMarker() {
 		var marker = document.createElement("div");
 		marker.style.color = "#933";
@@ -81,40 +79,35 @@ angular
 		return marker;
 	}
 
-	$scope.btnRunClick = function() {
+	$scope.btnUploadClk = function() {
 		$scope.page = 'view';
 		
 		$scope.editor.setValue($scope.cmModel);
-		$scope.editor.markText({line: 0, ch: 0}, {line: 1}, {className: "styled-background"});
 		line1 = 0;
 		line2 = 0;
+		$scope.editor.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
 		setTimeout(function() {
 			$scope.editor.refresh();
 		}, 100);
 	};
 	
-	$scope.fresh = function() {
-		$scope.editor.refresh();
-	}
-	
-	$scope.homeClk = function() {
+	$scope.btnHomeClk = function() {
 		 $scope.page = 'select';
 	};
 	
-	$scope.inputClk = function() {
+	$scope.btnInputClk = function() {
 		 $scope.page = 'input';
 	};
 	
-	$scope.stepClk = function() {
+	$scope.btnStepClk = function() {
 		$scope.editor.setValue($scope.cmModel);
 		$scope.editor.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
 		line1 = line1 + 1;
 		line2 = line2 + 1;
 	};
 	
-	$scope.selectAlgor = '';
 
-	$scope.algorClick = function(subject) {
+	$scope.algorClk = function(subject) {
 		$http.get('/api/algorithms/'+subject).then(function (response) {
 			$scope.cmModel = response.data.code;
 			$scope.input = response.data.inputData;

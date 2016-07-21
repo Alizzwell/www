@@ -1,7 +1,5 @@
 <div class="page-header">
 	<label class="btn btn-primary">Menu</label>
-	<label class="btn btn-primary">순차정렬</label>
-	<label class="btn btn-primary">카테고리</label>
 </div>
 <div class="row">
 	<nav class="col-sm-3">
@@ -61,7 +59,7 @@
 				<tbody>
 					<tr ng-repeat="x in response.data" ng-if="chk[x.category]">
 						<td>
-							<img src="/images/thumb/{{x.category}} - {{x.subject}}.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=algorClick(x.subject)>
+							<img src="/images/thumb/{{x.category}} - {{x.subject}}.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=algorClk(x.subject)>
 						</td>
 						<td>
 							<h4>{{x.category}}</h4>
