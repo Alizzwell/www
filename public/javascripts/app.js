@@ -1,81 +1,125 @@
-var strictCode = '#include <stdio.h>\n\
-\n\
-int A[6] = {9, 8, 7, 6, 5, 4};\n\
-\n\
-int main() {\n\
-	for (int i = 5; i >= 0; i--) {\n\
-		for (int j = 0; j < i; j++) {\n\
-			if (A[j] > A[j + 1]) {\n\
-				swap(A[j], A[j + 1]);\n\
-			}\n\
-		}\n\
-	}\n\
-\n\
-	return 0;\n\
-}';
-
-
+var line1 = 0;
+var line2 = 0;
+var points = {};
 
 angular
   .module('this-play.demo', ['ngAnimate', 'ui.bootstrap', 'ui.codemirror'])
   
-  .controller('DemoCtrl', function($scope, $rootScope) {
-	  
-	$scope.arrayChk = true;
-	$scope.sortChk = true;
-	$scope.searchChk = true;
-	$scope.listChk = true;
-	$scope.treeChk = true;
-	$scope.graphChk = true;
-	$scope.dpChk = true;
+  .controller('DemoCtrl', function($scope, $rootScope, $http) {	  
+	$http({
+		method: 'GET',
+		url: '/api/algorithms'
+	}).then(function successCallback(response) {
+		$scope.response = response;
+	}, function errorCallback(response) {
+	});
+	
+	Array.prototype.remove = function(from, to) {
+		var rest = this.slice((to || from) + 1 || this.length);
+		this.length = from < 0 ? this.length + from : from;
+		return this.push.apply(this, rest);
+	};
+	
+	$scope.breakp = []; 
+	
+	$scope.page = 'select';
+	
+	$scope.chk = {
+		"array": true,
+		"sort": true,
+		"search": true,
+		"list": true,
+		"tree": true,
+		"graph": true,
+		"dp": true
+	};
     
 	$scope.modes = ['text/x-csrc', 'text/x-c++src', 'text/x-java'];
 	$scope.mode = $scope.modes[0];
-	
-	$scope.cmModel = strictCode;
-	
-	$scope.cmOutputOption = {
-		indentWithTabs: true,
-		mode: $scope.mode,
-		lineNumbers: true,
-		lineWrapping: true,
-		styleSelectedText: true
-	};
 	
 	$scope.cmInputOption = {
 		indentWithTabs: true,
 		mode: $scope.mode,
 		styleActiveLine: true,
+		autoCloseBrackets: true,
 		lineNumbers: true,
 		lineWrapping: true,
 		styleSelectedText: true
 	};
-	  
-	$scope.cmModel = strictCode;
-
+	
+	$scope.editor = CodeMirror.fromTextArea(document.getElementById("txtCode"), {
+		indentWithTabs: true,
+		mode: $scope.mode,
+		lineNumbers: true,
+		lineWrapping: true,
+		styleSelectedText: true,
+		readOnly: true,
+		autoRefresh: true,
+		gutters: ["CodeMirror-linenumbers", "breakpoints"]
+	});
+	
+	$scope.editor.on("gutterClick", function(cm, n) {
+		var info = cm.lineInfo(n);
+		cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());
+		var pos = $scope.breakp.indexOf(n);
+		if(pos < 0)
+		{
+			$scope.breakp.push(n);
+		}
+		else
+		{
+			$scope.breakp.remove(pos, pos);
+		}
+	});
+	
+	//editor.markText({line: 0, ch: 0}, {line: 1}, {className: "styled-background"});
+	
+	function makeMarker() {
+		var marker = document.createElement("div");
+		marker.style.color = "#933";
+		marker.innerHTML = "●";
+		return marker;
+	}
 
 	$scope.btnRunClick = function() {
-		$scope.visualize = true;
-		//$scope.cmModel = strictCode;	
+		$scope.page = 'view';
 		
-		$('#txtCode').val($scope.cmModel);
-		
-		upload($scope.input, $scope.cmModel);
+		$scope.editor.setValue($scope.cmModel);
+		$scope.editor.markText({line: 0, ch: 0}, {line: 1}, {className: "styled-background"});
+		line1 = 0;
+		line2 = 0;
+		setTimeout(function() {
+			$scope.editor.refresh();
+		}, 100);
+	};
+	
+	$scope.fresh = function() {
+		$scope.editor.refresh();
+	}
+	
+	$scope.homeClk = function() {
+		 $scope.page = 'select';
+	};
+	
+	$scope.inputClk = function() {
+		 $scope.page = 'input';
+	};
+	
+	$scope.stepClk = function() {
+		$scope.editor.setValue($scope.cmModel);
+		$scope.editor.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
+		line1 = line1 + 1;
+		line2 = line2 + 1;
 	};
 	
 	$scope.selectAlgor = '';
-	
-	$scope.btnRunClick = function() {
-		$scope.visualize = true;
-		//$scope.cmModel = strictCode;	
-		
-		$('#txtCode').val($scope.cmModel);
-		
-		upload($scope.input, $scope.cmModel);
+
+	$scope.algorClick = function(subject) {
+		$http.get('/api/algorithms/'+subject).then(function (response) {
+			$scope.cmModel = response.data.code;
+			$scope.input = response.data.inputData;
+         });
+		 
+		 $scope.page = 'input';
 	};
-	
-	$scope.btnAlgorClick = function() {
-		location.href = "/main";       
-	};
-	
   });

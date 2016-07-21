@@ -1,0 +1,31 @@
+<div class="page-header">
+	<label class="btn btn-primary" ng-click="homeClk()">Home</label>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<h3>{{selectAlgor}}</h3>
+		<h4>Source Code</h4>
+		<div class="btn-group">
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-csrc'">C</label>
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-c++src'">C++</label>
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-java'">Java</label>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<textarea ui-codemirror="cmInputOption" ng-model="cmModel"></textarea>
+	</div>
+</div>
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<h4>Input Data</h4>
+		<input type="text" ng-model="input" class="form-control">
+	</div>
+</div>
+<div class="row" style="margin-top:50px; text-align:center;">
+	<div class="col-md-12">
+		<button type="button" class="btn btn-primary" ng-model="input" ng-click=btnRunClick()
+			style="width:500px; height:50px;">Upload</button>
+	</div>
+</div>

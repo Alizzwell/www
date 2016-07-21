@@ -222,5 +222,4 @@ module.exports = function(app, Algorithm, Problem) {
 	app.get('/api/:number/:difficulty', function(req, res) {
 	
 	});
->>>>>>> origin/feature/db_algos
 };

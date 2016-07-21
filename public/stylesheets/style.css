@@ -36,6 +36,17 @@ svg {
 
 }
 
+
+      .breakpoints {width: 1.0em;}
+      .breakpoint { color: #822; }
+      .CodeMirror {border: 1px solid #aaa;}
+	  
+	  
+      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+      .CodeMirror-selected  { background-color: blue !important; }
+      .CodeMirror-selectedtext { color: white; }
+      .styled-background { background-color: #0ff; }
+
 .CodeMirror-readonly .CodeMirror-cursor {
   display: none !important
 }

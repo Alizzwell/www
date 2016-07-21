@@ -1,0 +1,21 @@
+<div class="page-header">
+	<label class="btn btn-primary" ng-click="homeClk()">Home</label>
+	<label class="btn btn-primary" ng-click="inputClk()">Input</label>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<span>input</span>
+		<input type="text" ng-model="input" class="form-control">
+		<span>code</span>
+		<textarea id="txtCode" onload="fresh();"></textarea>
+		<!--<textarea style="width:200%; height: 500px;" ui-codemirror="cmOutputOption" ng-model="cmModel"></textarea>-->
+	</div>
+	<div class="col-md-1"></div>
+	<div class="col-md-8" id="canvas"></div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<button type="button" class="btn btn-primary" ng-click=stepClk()>Step</button>
+	</div>
+</div>
+
