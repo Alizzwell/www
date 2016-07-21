@@ -8,20 +8,33 @@
 var app = angular.module("myApp", []);
 
 app.controller("myCtrl", function ($scope, $http) {
-	$scope.code = "";
+	$scope.code = `#include <stdio.h>
+		
+int a;
+
+int main() {
+	a = 1;
+	a = 2;
+	a = 3;
+
+	return 0;
+}`;
 
 	$scope.upload = function () {
-		alert($scope.code);
+		//alert($scope.code);
 		$http({
 			method: 'POST',
 			url: '/api/execute',
 			data: { code: $scope.code, targets: ['a'], input: "" }
 		}).then(
 			function (res) {
-				alert(res);
+				//alert(res);
+				console.log(res.data);
+				console.log(JSON.parse(res.data));
 			}, 
 			function (res) {
-				alert(res);
+				//alert(res);
+				console.log(res);
 			}
 		);
 	}
@@ -37,15 +50,15 @@ app.controller("myCtrl", function ($scope, $http) {
 </body>
 </html>
 
-
-#include <stdio.h>
-
-int a;
-
-int main() {
-	a = 1;
-	a = 2;
-	a = 3;
-
-	return 0;
-}
+<br>
+#include \<stdio.h\><br>
+<br>
+int a;<br>
+<br>
+int main() {<br>
+	a = 1;<br>
+	a = 2;<br>
+	a = 3;<br>
+<br>
+	return 0;<br>
+}<br>

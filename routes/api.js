@@ -4,7 +4,7 @@ var imagenameIndex = 1;
 var tmpImagePath = 'tmp/images/';
 var imagePath = 'public/images/thumb/';
 var sourcePath = 'tmp/source_code/';
-var testjsPath = 'public/code/';
+var testjsPath = 'gcc/';
 
 
 var multer = require('multer');
@@ -12,6 +12,25 @@ var fs = require('fs');
 var util = require('util');
 var exec = require('child_process').exec;
 var async = require('async');
+var CronJob = require('cron').CronJob;
+
+var job = new CronJob({
+	cronTime: '0 0 0 * * *',
+	onTick: function () {
+		filenameIndex = 1;
+		imagenameIndex = 1;
+		
+		var cmd = "find tmp -type f -not -name .gitignore -print0 | xargs -0 rm --";
+		exec(cmd, function (err, stdout, stderr) {
+			if (err) {
+				console.log(err);
+			}
+		});
+	},
+	start: false,
+	timeZone: 'Asia/Seoul'
+});
+job.start();
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -60,7 +79,7 @@ module.exports = function(app, Algorithm) {
 				return;
 			}
 			
-			res.json({image_file_name: req.file.filename});
+			res.json({image_file_name: tmpImagePath + req.file.filename});
 		});
 	});
 
@@ -86,8 +105,10 @@ module.exports = function(app, Algorithm) {
 			algorithm.inputData = inputData;
 			algorithm.code = code;
 			
-			var img_fn = req.body.image_file_name;
-			fs.createReadStream(tmpImagePath + img_fn)
+			var img_path = req.body.image_file_name;
+			var img_fn_temp = img_path.split('/');
+			var img_fn = img_fn_temp[img_fn_temp.length - 1];
+			fs.createReadStream(img_path)
 				.pipe(fs.createWriteStream(imagePath + img_fn.substring(img_fn.indexOf('_') + 1)));
 		
 			algorithm.save(function(err) {
@@ -138,7 +159,7 @@ module.exports = function(app, Algorithm) {
 	코드 업로드 & 실행 & json으로 response
 	*/
 	app.post('/api/execute', function(req, res) {
-		var code = req.body.code;
+		var code = req.body.code.trim() + "\n\n";
 		var targets = req.body.targets;
 		var input = req.body.input;
 		var bps = req.body.bps;
@@ -165,7 +186,7 @@ module.exports = function(app, Algorithm) {
 				);
 			},
 			function (cb) {				
-				var cmd = util.format('g++ %s -o %s', 
+				var cmd = util.format('g++ -g %s -o %s', 
 					sourcePath + filenameIndex + '.cpp',
 					sourcePath + filenameIndex + '.out');
 					
