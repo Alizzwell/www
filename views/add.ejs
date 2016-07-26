@@ -72,8 +72,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<img src="/images/thumb/add.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=addImageClk()>
-		<input ng-model="photo"
-       onchange="angular.element(this).scope().file_changed(this)"
+		<input type="file" id="file1" multiple ng-files="uploadFiles($files)"
        type="file" accept="image/*" />
 	</div>
 </div>
