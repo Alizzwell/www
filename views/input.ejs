@@ -13,7 +13,7 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<textarea ui-codemirror="cmInputOption" ng-model="cmModel"></textarea>
+		<textarea id="inputEdit"></textarea>
 	</div>
 </div>
 <div class="row" style="margin-top:20px;">
@@ -22,9 +22,17 @@
 		<input type="text" ng-model="input" class="form-control">
 	</div>
 </div>
+
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<h4>Target Data</h4>
+		<input type="text" ng-model="target" class="form-control">
+	</div>
+</div>
+
 <div class="row" style="margin-top:50px; text-align:center;">
 	<div class="col-md-12">
-		<button type="button" class="btn btn-primary" ng-model="input" ng-click=btnUploadClk()
+		<button type="button" class="btn btn-primary" ng-click=btnUploadClk()
 			style="width:500px; height:50px;">Upload</button>
 	</div>
 </div>
