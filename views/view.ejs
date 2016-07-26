@@ -5,9 +5,11 @@
 <div class="row">
 	<div class="col-md-3">
 		<span>input</span>
-		<input type="text" ng-model="input" class="form-control">
+		<input type="text" ng-model="input" ng-readonly="true" class="form-control">
+		<span>target</span>
+		<input type="text" ng-model="target" ng-readonly="true" class="form-control">
 		<span>code</span>
-		<textarea id="txtCode"></textarea>
+		<textarea id="outputEdit"></textarea>
 	</div>
 	<div class="col-md-1"></div>
 	<div class="col-md-8" id="canvas"></div>

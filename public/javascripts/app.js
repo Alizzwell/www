@@ -46,28 +46,35 @@ angular
 	$scope.modes = ['text/x-csrc', 'text/x-c++src', 'text/x-java'];
 	$scope.mode = $scope.modes[0];
 	
-	$scope.cmInputOption = {
+	$scope.cmOutputOption = {
+		indentWithTabs: true,
+		mode: $scope.mode,
+		lineNumbers: true,
+		lineWrapping: true,
+		styleSelectedText: true,
+		readOnly: true
+	};
+	
+	$scope.outputEdit = CodeMirror.fromTextArea(document.getElementById("outputEdit"), {
+		indentWithTabs: true,
+		mode: $scope.mode,
+		lineNumbers: true,
+		lineWrapping: true,
+		styleSelectedText: true,
+		readOnly: true
+	});
+	
+	$scope.inputEdit = CodeMirror.fromTextArea(document.getElementById("inputEdit"), {
 		indentWithTabs: true,
 		mode: $scope.mode,
 		styleActiveLine: true,
 		autoCloseBrackets: true,
 		lineNumbers: true,
 		lineWrapping: true,
-		styleSelectedText: true
-	};
-	
-	$scope.editor = CodeMirror.fromTextArea(document.getElementById("txtCode"), {
-		indentWithTabs: true,
-		mode: $scope.mode,
-		lineNumbers: true,
-		lineWrapping: true,
-		styleSelectedText: true,
-		readOnly: true,
-		autoRefresh: true,
 		gutters: ["CodeMirror-linenumbers", "breakpoints"]
 	});
 	
-	$scope.editor.on("gutterClick", function(cm, n) {
+	$scope.inputEdit.on("gutterClick", function(cm, n) {
 		var info = cm.lineInfo(n);
 		cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());
 		var pos = $scope.breakp.indexOf(n);
@@ -204,8 +211,12 @@ angular
 		$http.get('/api/algorithms/'+subject).then(function (response) {
 			$scope.cmModel = response.data.code;
 			$scope.input = response.data.inputData;
+			$scope.inputEdit.setValue($scope.cmModel);
          });
 		 
-		 $scope.page = 'input';
+		$scope.page = 'input';
+		setTimeout(function() {
+			$scope.inputEdit.refresh();
+		}, 100);
 	};
   });
