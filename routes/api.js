@@ -2,7 +2,7 @@
 var filenameIndex = 1;
 var imagenameIndex = 1;
 var tmpImagePath = 'tmp/images/';
-var imagePath = 'public/images/thumb/';
+var imagePath = 'images/thumb/';
 var sourcePath = 'tmp/source_code/';
 var testjsPath = 'gcc/';
 
@@ -60,8 +60,8 @@ module.exports = function(app, Algorithm, Problem) {
   
   
 	// algorithms
-	app.get('/api/algoritms', function(req, res) {
-		Algorithm.find({}, {"category": 1, "subject": 1, "_id": 0}, function(err, data) {
+	app.get('/api/algorithms', function(req, res) {
+		Algorithm.find({}, {"category": 1, "subject": 1, "imageURL": 1, "_id": 0}, function(err, data) {
 		if (err)
 			return res.json({"result": 1});
 		else
@@ -79,6 +79,7 @@ module.exports = function(app, Algorithm, Problem) {
 					res.json({"result": 3});
 					return;
 				}
+				console.log(err);
 				res.json({"result": 1});
 				return;
 			}
@@ -108,13 +109,17 @@ module.exports = function(app, Algorithm, Problem) {
 			algorithm.subject = subject;
 			algorithm.inputData = inputData;
 			algorithm.code = code;
+			algorithm.imageURL = "";
 			
 			if (req.body.image_file_name) {
-				var img_path = req.body.image_file_name;
-				var img_fn_temp = img_path.split('/');
-				var img_fn = img_fn_temp[img_fn_temp.length - 1];
-				fs.createReadStream(img_path)
-					.pipe(fs.createWriteStream(imagePath + img_fn.substring(img_fn.indexOf('_') + 1)));
+				var img_tmp_path = req.body.image_file_name;
+				
+				var temp = img_tmp_path.split('.');
+				var img_ext = temp[temp.length - 1];
+				var img_store_path = imagePath + subject + "." + img_ext;
+				fs.createReadStream(img_tmp_path)
+					.pipe(fs.createWriteStream(img_store_path));
+				algorithm.imageURL = img_store_path;
 			}
 			
 			algorithm.save(function(err) {
