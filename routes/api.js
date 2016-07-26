@@ -59,98 +59,8 @@ module.exports = function(app, Algorithm, Problem) {
 
   
   
-  app.post('/api/demo/upload', function(req, res) {
-
-	  // call python script (Async) //
-	  (function when_py_done_callback() {
-		  // completely created binary.
-		  
-		  (function when_binary_print_output() {
-			  // binary print output...
-			  
-			  // output -> json data
-			  var jsonData = {
-				  targets: [
-					{ name: "A", type: "integer", isArray: true, length: 6, init: [ 9, 8, 7, 6, 5, 4 ] }
-				  ],
-				  steps: [
-          { line: 6, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
-          
-          { line: 7, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
-          { line: 8, status: { "A": [ 9, 8, 7, 6, 5, 4 ] } },
-          { line: 9, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
-          { line: 10, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
-          { line: 8, status: { "A": [ 8, 9, 7, 6, 5, 4 ] } },
-          { line: 9, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
-          { line: 10, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
-          { line: 8, status: { "A": [ 8, 7, 9, 6, 5, 4 ] } },
-          { line: 9, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
-          { line: 10, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
-          { line: 8, status: { "A": [ 8, 7, 6, 9, 5, 4 ] } },
-          { line: 9, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
-          { line: 10, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
-          { line: 8, status: { "A": [ 8, 7, 6, 5, 9, 4 ] } },
-          { line: 9, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
-          { line: 10, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
-          { line: 11, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
-
-          { line: 7, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
-          { line: 8, status: { "A": [ 8, 7, 6, 5, 4, 9 ] } },
-          { line: 9, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
-          { line: 10, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
-          { line: 8, status: { "A": [ 7, 8, 6, 5, 4, 9 ] } },
-          { line: 9, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
-          { line: 10, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
-          { line: 8, status: { "A": [ 7, 6, 8, 5, 4, 9 ] } },
-          { line: 9, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
-          { line: 10, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
-          { line: 8, status: { "A": [ 7, 6, 5, 8, 4, 9 ] } },
-          { line: 9, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
-          { line: 10, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
-          { line: 11, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
-
-          { line: 7, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
-          { line: 8, status: { "A": [ 7, 6, 5, 4, 8, 9 ] } },
-          { line: 9, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
-          { line: 10, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
-          { line: 8, status: { "A": [ 6, 7, 5, 4, 8, 9 ] } },
-          { line: 9, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
-          { line: 10, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
-          { line: 8, status: { "A": [ 6, 5, 7, 4, 8, 9 ] } },
-          { line: 9, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
-          { line: 10, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
-          { line: 11, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
-
-          { line: 7, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
-          { line: 8, status: { "A": [ 6, 5, 4, 7, 8, 9 ] } },
-          { line: 9, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
-          { line: 10, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
-          { line: 8, status: { "A": [ 5, 6, 4, 7, 8, 9 ] } },
-          { line: 9, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
-          { line: 10, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
-          { line: 11, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
-
-          { line: 7, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
-          { line: 8, status: { "A": [ 5, 4, 6, 7, 8, 9 ] } },
-          { line: 9, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
-          { line: 10, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
-          { line: 11, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
-
-          { line: 12, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } },
-
-          { line: 14, status: { "A": [ 4, 5, 6, 7, 8, 9 ] } }
-				  ]
-			  };
-			  
-			  res.status(201).json(jsonData);
-			  
-		  })();
-		  
-	  })();
-  });
-  
 	// algorithms
-	app.get('/api/algorithms', function(req, res) {
+	app.get('/api/algoritms', function(req, res) {
 		Algorithm.find({}, {"category": 1, "subject": 1, "_id": 0}, function(err, data) {
 		if (err)
 			return res.json({"result": 1});
@@ -161,7 +71,7 @@ module.exports = function(app, Algorithm, Problem) {
   
   
 
-	app.post('/api/algorithms', function(req, res) {
+	app.post('/api/image_upload', function(req, res) {
 		upload(req, res, function(err) {
 			if (err) {
 				// upload file size exceeded
@@ -188,7 +98,7 @@ module.exports = function(app, Algorithm, Problem) {
 			var subject = req.body.subject;
 			var inputData = req.body.inputData;
 			var code = req.body.code;
-			if (category && subject && code) {
+			if (!(category && subject && code)) {
 				res.json({"result": 4});
 				return;
 			}
@@ -199,12 +109,14 @@ module.exports = function(app, Algorithm, Problem) {
 			algorithm.inputData = inputData;
 			algorithm.code = code;
 			
-			var img_path = req.body.image_file_name;
-			var img_fn_temp = img_path.split('/');
-			var img_fn = img_fn_temp[img_fn_temp.length - 1];
-			fs.createReadStream(img_path)
-				.pipe(fs.createWriteStream(imagePath + img_fn.substring(img_fn.indexOf('_') + 1)));
-		
+			if (req.body.image_file_name) {
+				var img_path = req.body.image_file_name;
+				var img_fn_temp = img_path.split('/');
+				var img_fn = img_fn_temp[img_fn_temp.length - 1];
+				fs.createReadStream(img_path)
+					.pipe(fs.createWriteStream(imagePath + img_fn.substring(img_fn.indexOf('_') + 1)));
+			}
+			
 			algorithm.save(function(err) {
 				if (err)
 					res.json({"result": 1});
