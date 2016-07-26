@@ -1,0 +1,86 @@
+<div class="page-header">
+	<label class="btn btn-primary" ng-click="btnHomeClk()">Home</label>
+</div>
+
+<div class="row">
+	<div class="col-md-1">
+		<h4>
+		Category   
+		</h4>
+	</div>
+	
+	<div class="col-md-11">
+		<div class="dropdown">
+			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				{{category}}<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<li ng-repeat="a in arrCategory">
+					<a ng-click="dropboxitemselected(a)">{{a}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-1">
+		<h4>Subject</h4>
+	</div>
+	
+	<div class="col-md-11">
+		<input type="text" ng-model="subject" class="form-control">
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-1">
+		<h4>Target</h4>
+	</div>
+	
+	<div class="col-md-11">
+		<input type="text" ng-model="target" class="form-control">
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-1">
+		<h4>Input</h4>
+	</div>
+	
+	<div class="col-md-11">
+		<textarea ng-model="input" width="500", height="300"></textarea>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<h4>Source Code</h4>
+		<div class="btn-group">
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-csrc'">C</label>
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-c++src'">C++</label>
+			<label class="btn btn-primary" ng-model="cmInputOption.mode" uib-btn-radio="'text/x-java'">Java</label>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<textarea id="inputEdit" width="220px" height="200px"></textarea>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<img src="/images/thumb/add.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=addImageClk()>
+		<input ng-model="photo"
+       onchange="angular.element(this).scope().file_changed(this)"
+       type="file" accept="image/*" />
+	</div>
+</div>
+
+<div class="row" style="margin-top:50px; text-align:center;">
+	<div class="col-md-12">
+		<button type="button" class="btn btn-primary" ng-click=btnCreateClk()
+			style="width:500px; height:50px;">Create</button>
+	</div>
+</div>

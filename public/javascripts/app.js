@@ -23,6 +23,15 @@ angular
 	$scope.breakp = []; 
 	$scope.page = 'select';
 	$scope.selectAlgor = '';
+	$scope.input = '';
+	$scope.target = '';
+	$scope.cmModel = '';
+	$scope.dataObject;
+	$scope.category = "array";
+	$scope.subject = '';
+	$scope.dataObject = {category: "array", subject: "array2", code: "code...", inputData: "3 1 1"};
+	
+	$scope.arrCategory = ["array", "sort", "search", "list", "tree", "graph", "dp"];
 	
 	$scope.chk = {
 		"array": true,
@@ -78,16 +87,96 @@ angular
 		marker.innerHTML = "●";
 		return marker;
 	}
+	
+	$scope.dropboxitemselected = function (item) {
+ 
+        $scope.category = item;
+    }
+	
+	$scope.file_changed = function(element) {
+
+     $scope.$apply(function(scope) {
+         var photofile = element.files[0];
+         var reader = new FileReader();
+         reader.onload = function(e) {
+         };
+         reader.readAsDataURL(photofile);
+     });
+};
+	
+	$scope.btnCreateClk = function() {
+		$scope.dataObject.code = $scope.inputEdit.getValue();
+		$scope.dataObject.inputData = $scope.input;
+		$scope.dataObject.category = $scope.category;
+		$scope.dataObject.subject = $scope.subject;
+		$http({
+			method: 'POST',
+			url: '/api/algorithms/',
+			data: $scope.dataObject,
+			headers: {'Content-Type': 'application/json; charset=utf-8'}
+		})
+		.success(function(data, status, headers, config) {
+			if( data ) {
+				// 성공적으로 결과 데이터가 넘어 왔을 때 처리
+				console.log(data);
+				console.log("sus");
+			}
+			else {
+				// 통신한 URL에서 데이터가 넘어오지 않았을 때 처리
+				console.log(data);
+				console.log("fail");
+			}
+		})
+		.error(function(data, status, headers, config) {
+			// 서버와의 연결이 정상적이지 않을 때 처리
+			console.log(status);
+			console.log(data);
+			console.log("err");
+		});
+		
+		
+		$scope.page = 'select';
+	}
 
 	$scope.btnUploadClk = function() {
 		$scope.page = 'view';
-		
-		$scope.editor.setValue($scope.cmModel);
+		$scope.cmModel = $scope.inputEdit.getValue();
+		$scope.outputEdit.setValue($scope.cmModel);
 		line1 = 0;
 		line2 = 0;
-		$scope.editor.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
+		$scope.outputEdit.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
+		/*$scope.dataObject.code = $scope.inputEdit.getValue();
+		$scope.dataObject.input = $scope.input;
+		$scope.dataObject.target = $scope.target;
+		$scope.dataObject.bps = $scope.breakp;
+		$http({
+			method: 'POST',
+			url: '/api/excute/',
+			data: dataObject,
+			headers: {'Content-Type': 'application/json; charset=utf-8'}
+		})
+		.success(function(data, status, headers, config) {
+			if( data ) {
+				// 성공적으로 결과 데이터가 넘어 왔을 때 처리
+			}
+			else {
+				// 통신한 URL에서 데이터가 넘어오지 않았을 때 처리
+			}
+		})
+		.error(function(data, status, headers, config) {
+			// 서버와의 연결이 정상적이지 않을 때 처리
+			console.log(status);
+		});*/
+		
+		/*$http.post('/api/excute/').then(function (response) {
+			response.data.code = $scope.inputEdit.getValue();
+			response.data.input = $scope.input;
+			response.data.target = $scope.target;
+			response.data.bps = $scope.breakp;
+         });*/
+		
 		setTimeout(function() {
-			$scope.editor.refresh();
+			$scope.outputEdit.refresh();
 		}, 100);
 	};
 	
@@ -99,9 +188,13 @@ angular
 		 $scope.page = 'input';
 	};
 	
+	$scope.btnAddClk = function() {
+		$scope.page = 'add';
+	};
+	
 	$scope.btnStepClk = function() {
-		$scope.editor.setValue($scope.cmModel);
-		$scope.editor.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
+		$scope.outputEdit.setValue($scope.cmModel);
+		$scope.outputEdit.markText({line: line1, ch: 0}, {line: line2}, {className: "styled-background"});
 		line1 = line1 + 1;
 		line2 = line2 + 1;
 	};
