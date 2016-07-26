@@ -118,7 +118,7 @@ module.exports = function(app, Algorithm, Problem) {
 				var img_ext = temp[temp.length - 1];
 				var img_store_path = imagePath + subject + "." + img_ext;
 				fs.createReadStream(img_tmp_path)
-					.pipe(fs.createWriteStream(img_store_path));
+					.pipe(fs.createWriteStream("public/" + img_store_path));
 				algorithm.imageURL = img_store_path;
 			}
 			
