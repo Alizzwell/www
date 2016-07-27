@@ -34,10 +34,10 @@ job.start();
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, tmpImagePath);
+		cb(null, "public/" + tmpImagePath);
 	},
 	filename: function(req, file, cb) {
-		cb(null, imagenameIndex++ + '_' + file.originalname);
+		cb(null, Date.now() + '_' + file.originalname);
 	}
 });
 
@@ -84,7 +84,7 @@ module.exports = function(app, Algorithm, Problem) {
 				return;
 			}
 			
-			res.json({image_file_name: tmpImagePath + req.file.filename});
+			res.json({image_file_name: "/" + tmpImagePath + req.file.filename});
 		});
 	});
 
@@ -117,7 +117,7 @@ module.exports = function(app, Algorithm, Problem) {
 				var temp = img_tmp_path.split('.');
 				var img_ext = temp[temp.length - 1];
 				var img_store_path = imagePath + subject + "." + img_ext;
-				fs.createReadStream(img_tmp_path)
+				fs.createReadStream("public/" + img_tmp_path)
 					.pipe(fs.createWriteStream("public/" + img_store_path));
 				algorithm.imageURL = img_store_path;
 			}

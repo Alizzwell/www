@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9">
+
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	
+	<script src="/javascripts/jquery-2.2.4.min.js"></script>
+    <script src="/javascripts/angular.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
+	
+</head>
+
+<body ng-app="algorithms.list" >
+	<%- include /nav.ejs %>
+	
+	<div  id="body" class="container-fluid">
+		<div class="wrapper" ng-controller="ListCtrl" ng-cloak>
+		
+			<div class="page-header">
+				<label class="btn btn-primary">Menu</label>
+				<label class="btn btn-primary" ng-click="btnAddClk()">Add</label></a>
+			</div>
+
+			<div class="row">
+				<nav class="col-sm-3">
+					<ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+						<div class="panel panel-default">
+							<div class="panel-heading">카테고리</div>
+							<div class="panel-body" ng-init="initCategory()">
+								<div class="checkbox" ng-repeat="x in categorys">
+									<label>
+										<input type="checkbox" ng-model="chk[x.id]"> {{x.label}}
+									</label>
+								</div>
+							</div>
+						</div>
+					</ul>
+				</nav>
+				
+				<div class="col-sm-9">
+					<div>
+						<table class="table" ng-init="getAlgorithmList()">
+							<thead>
+								<tr>
+									<th width="220px">이미지</th>
+									<th>설명</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="x in algorithms" ng-if="chk[x.category]">
+									<td>
+										<img ng-src="/images/thumb/{{x.category}} - {{x.subject}}.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=algorClk(x.subject)>
+									</td>
+									<td>
+										<h4>{{x.category}}</h4>
+										<div>{{x.subject}}</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<script src="/javascripts/modules/algorithms.js"></script>
+
+</body>
+
+</html>
