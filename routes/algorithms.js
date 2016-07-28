@@ -8,7 +8,9 @@ router.get('/add', function(req, res) {
 	res.render('algorithms/add');
 });
 
-router.get('/:subject', function(req, res) {
+router.get('/:id', function(req, res) {
+	var id = req.params.id;
+	res.render('algorithms/view', { "id": id });
 	// detail view page randering
 });
 

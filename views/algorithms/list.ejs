@@ -21,7 +21,7 @@
 		
 			<div class="page-header">
 				<label class="btn btn-primary">Menu</label>
-				<label class="btn btn-primary" ng-click="btnAddClk()">Add</label></a>
+				<a href="/algorithms/add"><label class="btn btn-primary">Add</label></a>
 			</div>
 
 			<div class="row">
@@ -52,7 +52,9 @@
 							<tbody>
 								<tr ng-repeat="x in algorithms" ng-if="chk[x.category]">
 									<td>
-										<img ng-src="/images/thumb/{{x.category}} - {{x.subject}}.jpg" class="img-rounded" alt="Cinque Terre" width="240" height="160" ng-click=algorClk(x.subject)>
+										<a href="/algorithms/{{x._id}}">
+										<img ng-src="{{x.imageURL}}" class="img-rounded" alt="Cinque Terre" width="240" height="160">
+										</a>
 									</td>
 									<td>
 										<h4>{{x.category}}</h4>
