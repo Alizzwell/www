@@ -2,57 +2,44 @@
   padding-top: 70px;
 }
 
-ul#algo li {
-  width: 300px;
-}
-
-
 html {
   font-family: Monaco, Monospace;
   fill: #111;
   padding:20px;
-  /*font-size: 22px;*/
 }
 
-h4 pre {
-  font-size: 18px;
+
+
+
+
+ul#algo li {
+  width: 300px;
 }
 
 svg {
-	  font-size: 40px;
+  font-size: 40px;
 }
 
-.demo svg{
-	font-size:36px;
-}
-
-.demo svg .sm{
-	font-size:24px;
-}
-
-.demo svg .xsm{
-	font-size:18px;
-	font-style: italic;
-
-}
-
-
-      .breakpoints {width: 1.0em;}
-      .breakpoint { color: #822; }
-      .CodeMirror {border: 1px solid #aaa;}
-	  
-	  
-      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
-      .CodeMirror-selected  { background-color: blue !important; }
-      .CodeMirror-selectedtext { color: white; }
-      .styled-background { background-color: #0ff; }
+.breakpoints { width: 1.0em; }
+.breakpoint { color: #822; }
+.CodeMirror { border: 1px solid #aaa; }
+	  	  
+.CodeMirror { border-top: 1px solid black; border-bottom: 1px solid black; }
+.CodeMirror-selected  { background-color: blue !important; }
+.CodeMirror-selectedtext { color: white; }
+.styled-background { background-color: #0ff; }
 
 .CodeMirror-readonly .CodeMirror-cursor {
   display: none !important
 }
 
- .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;}
+.CodeMirror {
+  border-top: 1px solid black; 
+  border-bottom: 1px solid black; 
+  border-left: 1px solid black; 
+  border-right: 1px solid black;
+}
 
-.comma {fill:green;}
-.text {fill:blue;}
-.parens {fill:red;}
+.comma { fill:green; }
+.text { fill:blue; }
+.parens { fill:red; }

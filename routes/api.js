@@ -34,10 +34,10 @@ job.start();
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, tmpImagePath);
+		cb(null, "public/" + tmpImagePath);
 	},
 	filename: function(req, file, cb) {
-		cb(null, imagenameIndex++ + '_' + file.originalname);
+		cb(null, Date.now() + '_' + file.originalname);
 	}
 });
 
@@ -61,7 +61,7 @@ module.exports = function(app, Algorithm, Problem) {
   
 	// algorithms
 	app.get('/api/algorithms', function(req, res) {
-		Algorithm.find({}, {"category": 1, "subject": 1, "imageURL": 1, "_id": 0}, function(err, data) {
+		Algorithm.find({}, { "_id": 1, "category": 1, "subject": 1, "imageURL": 1 }, function(err, data) {
 		if (err)
 			return res.json({"result": 1});
 		else
@@ -84,7 +84,7 @@ module.exports = function(app, Algorithm, Problem) {
 				return;
 			}
 			
-			res.json({image_file_name: tmpImagePath + req.file.filename});
+			res.json({image_file_name: "/" + tmpImagePath + req.file.filename});
 		});
 	});
 
@@ -94,11 +94,13 @@ module.exports = function(app, Algorithm, Problem) {
 				res.json({"result": 2});
 				return;
 			}
-			
+
 			var category = req.body.category;
 			var subject = req.body.subject;
 			var inputData = req.body.inputData;
+			var targets = req.body.targets;
 			var code = req.body.code;
+
 			if (!(category && subject && code)) {
 				res.json({"result": 4});
 				return;
@@ -108,6 +110,7 @@ module.exports = function(app, Algorithm, Problem) {
 			algorithm.category = category;
 			algorithm.subject = subject;
 			algorithm.inputData = inputData;
+			algorithm.targets = targets;
 			algorithm.code = code;
 			algorithm.imageURL = "";
 			
@@ -117,28 +120,40 @@ module.exports = function(app, Algorithm, Problem) {
 				var temp = img_tmp_path.split('.');
 				var img_ext = temp[temp.length - 1];
 				var img_store_path = imagePath + subject + "." + img_ext;
-				fs.createReadStream(img_tmp_path)
-					.pipe(fs.createWriteStream("public/" + img_store_path));
 				algorithm.imageURL = img_store_path;
+
+				var reader = fs.createReadStream("public/" + img_tmp_path);
+				var writer = fs.createWriteStream("public/" + img_store_path);
+				
+				writer.on('close', function () {
+					algorithm.save(function(err) {
+						if (err)
+							res.json({"result": 1});
+						else
+							res.json({"result": 0});
+					});
+				});
+				reader.pipe(writer);
 			}
-			
-			algorithm.save(function(err) {
-				if (err)
-					res.json({"result": 1});
-				else
-					res.json({"result": 0});
-			});
+			else {
+				algorithm.save(function(err) {
+					if (err)
+						res.json({"result": 1});
+					else
+						res.json({"result": 0});
+				});
+			}
 		});
 	});
 	
-	app.put('/api/algorithms/:subject', function(req, res) {		
-		Algorithm.find({subject: req.params.subject}, function(err, data) {
+	app.put('/api/algorithms/:id', function(req, res) {		
+		Algorithm.find({"_id": req.params.id}, function(err, data) {
 			if (data.length != 1) {
 				res.json({"result": 4});
 				return;
 			}
 			
-			Algorithm.update({subject: req.params.subject}, {$set: req.body}, function(err, doc) {
+			Algorithm.update({"_id": req.params.id}, {$set: req.body}, function(err, doc) {
 				if (err)
 					res.json({"result": 1});
 				else
@@ -147,8 +162,8 @@ module.exports = function(app, Algorithm, Problem) {
 		});
 	});
 	
-	app.delete('/api/algorithms/:subject', function(req, res) {
-		Algorithm.remove({subject: req.params.subject}, function(err) {
+	app.delete('/api/algorithms/:id', function(req, res) {
+		Algorithm.remove({"_id": req.params.id}, function(err) {
 			if (err)
 				res.json({"result": 1});
 			else
@@ -156,8 +171,8 @@ module.exports = function(app, Algorithm, Problem) {
 		});
 	});
 	
-	app.get('/api/algorithms/:subject', function(req, res) {
-		Algorithm.findOne({'subject': req.params.subject}, function(err, data) {
+	app.get('/api/algorithms/:id', function(req, res) {
+		Algorithm.findOne({'_id': req.params.id}, function(err, data) {
 			if (err)
 				res.json({"result": 1});
 			else
@@ -170,7 +185,7 @@ module.exports = function(app, Algorithm, Problem) {
 	코드 업로드 & 실행 & json으로 response
 	*/
 	app.post('/api/execute', function(req, res) {
-		var code = req.body.code.trim() + "\n\n";
+		var code = req.body.code + "\n\n";
 		var targets = req.body.targets;
 		var input = req.body.input;
 		var bps = req.body.bps;
@@ -230,8 +245,7 @@ module.exports = function(app, Algorithm, Problem) {
 			},
 			function (stdout, stderr, cb) {
 				filenameIndex++;
-				console.log("stdout: ", stdout);
-				res.json(stdout);
+				res.status(201).json(JSON.parse(stdout));
 			}
 		], function (err) {
 			if (err) {

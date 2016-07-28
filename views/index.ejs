@@ -4,18 +4,28 @@
 <head>
 	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 	<script src="/javascripts/jquery-2.2.4.min.js"></script>
-	<script src="/javascripts/temp.js"></script>
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
-  <%- include nav.ejs %>
+  	<%- include /nav.ejs %>
 
 	<div id="body" class="container-fluid">
 		<h1 class="page-header">Index</h1>
 		<ul id="algo" class="list-group">
 		</ul>
 	</div>
+
+	<script>
+		$(document).ready(function() {
+		  $.get( "/api/algorithms", function( data ) {
+		    for (var i in data) {
+		      $( "#algo" ).append('<li class="list-group-item" style="width:300">'
+		        + data[i].category + ", " + data[i].subject + '</li>');
+		    }
+		  });
+		});
+	</script>
 </body>
 
 </html>
