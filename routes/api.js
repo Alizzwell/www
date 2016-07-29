@@ -1,7 +1,7 @@
 
 var filenameIndex = 1;
 var imagenameIndex = 1;
-var tmpImagePath = 'tmp/images/';
+var tmpImagePath = 'images/tmp/';
 var imagePath = 'images/thumb/';
 var sourcePath = 'tmp/source_code/';
 var testjsPath = 'gcc/';
