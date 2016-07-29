@@ -188,10 +188,12 @@ angular.module('algorithms.view',
 
   scheduler.on('step', function () {
     markLine(scheduler.getLine() - 1);
+    onStep(scheduler);
   });
 
   scheduler.on('change', function (info) {
     // console.log(JSON.stringify(info));
+    onChange(scheduler, info);
   });
 
   function getAlgoData(id) {
@@ -253,8 +255,10 @@ angular.module('algorithms.view',
     markLine(scheduler.getLine() - 1);
   }
 
+  function initCanvas() {
+    onBind(scheduler);
+  }
   
-
   function btnUploadClk() {
     var dataObject = {
       "targets": $scope.data.targets,
@@ -271,8 +275,8 @@ angular.module('algorithms.view',
     })
     .success(function(data, status) {
       if (status == 201) {
-        scheduler.bind(data);
         $scope.page = "view";
+        scheduler.bind(data);
       }
       else {
         alert(`error!! (${status})`)
@@ -297,6 +301,7 @@ angular.module('algorithms.view',
   $scope.getAlgoData = getAlgoData;
   $scope.btnUploadClk = btnUploadClk;
   $scope.initOutputEdit = initOutputEdit;
+  $scope.initCanvas = initCanvas;
   $scope.btnStepClk = btnStepClk;
 
 });

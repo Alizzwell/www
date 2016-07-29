@@ -43,3 +43,7 @@ svg {
 .comma { fill:green; }
 .text { fill:blue; }
 .parens { fill:red; }
+
+#canvas {
+  padding-left: 50px;
+}
