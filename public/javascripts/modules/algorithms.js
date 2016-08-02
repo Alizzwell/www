@@ -261,7 +261,7 @@ angular.module('algorithms.view',
   
   function btnUploadClk() {
     var dataObject = {
-      "targets": $scope.data.targets,
+      "targets": $scope.data.targets.split(' '),
       "input": $scope.data.inputData,
       "code": $scope.data.code,
       "bps": $scope.breakp  // TODO: 기능 구현
