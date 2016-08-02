@@ -91,8 +91,19 @@
 			</div>
 		</div>
 	</div>
-
-	<%- include /d3samples/chart.ejs -%>
+	<%
+	if (id == "579ff661da6537a008819374") {
+	%>
+		<%- include /d3samples/chart.ejs -%>
+	<%
+	}
+	else if (id == "57a015a5c86aaaaf0a5eeb86") {
+	%>
+		<%- include /d3samples/stack.ejs -%>
+	<%
+	}
+	%>
+	
 
 	<script src="/javascripts/angular-animate.js"></script>
 	<script src="/javascripts/ui-bootstrap-tpls-1.3.3.js"></script>
