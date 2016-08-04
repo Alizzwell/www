@@ -100,6 +100,7 @@ module.exports = function(app, Algorithm, Problem) {
 			var inputData = req.body.inputData;
 			var targets = req.body.targets;
 			var code = req.body.code;
+			var breaks = req.body.breaks;
 
 			if (!(category && subject && code)) {
 				res.json({"result": 4});
@@ -113,6 +114,7 @@ module.exports = function(app, Algorithm, Problem) {
 			algorithm.targets = targets;
 			algorithm.code = code;
 			algorithm.imageURL = "";
+			algorithm.breaks = breaks;
 			
 			if (req.body.image_file_name) {
 				var img_tmp_path = req.body.image_file_name;

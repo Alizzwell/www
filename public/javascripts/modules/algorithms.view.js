@@ -34,6 +34,7 @@ angular.module('algorithms.view',
     $http.get('/api/algorithms/' + id)
     .then(function success(res, status) {
       $scope.data = res.data;
+      $scope.breakp = res.data.breaks;
       initInputEdit($scope.data.code);
     }, function err(res, status) {
       // TODO: err handler
@@ -73,6 +74,13 @@ angular.module('algorithms.view',
     });
 
     $scope.inputEdit.setValue(txt);
+
+    $scope.breakp.forEach(function (bp) {
+      var marker = document.createElement("div");
+      marker.style.color = "#933";
+      marker.innerHTML = "●";
+      $scope.inputEdit.setGutterMarker(bp - 1, "breakpoints", marker);
+    });
   }
 
   function initOutputEdit() {

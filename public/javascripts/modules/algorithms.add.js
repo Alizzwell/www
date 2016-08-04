@@ -48,7 +48,7 @@ angular.module('algorithms.add',
         marker.style.color = "#933";
         marker.innerHTML = "●";
         cm.setGutterMarker(n, "breakpoints", marker);  
-        $scope.breakp.push(n);
+        $scope.breakp.push(n + 1);
       }
     });
   }
@@ -78,7 +78,8 @@ angular.module('algorithms.add',
         "inputData": $scope.input,
         "targets": $scope.target,
         "code": $scope.inputEdit.getValue(),
-        "image_file_name": $scope.thumb
+        "image_file_name": $scope.thumb,
+        "breaks": $scope.breakp
       };
 
       $http({

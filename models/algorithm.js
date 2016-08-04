@@ -7,7 +7,8 @@ var algorithmSchema = new Schema({
 	inputData: String,
 	code: String,
 	imageURL: String,
-	targets: String
+	targets: String,
+	breaks: [Number]
 });
 
 module.exports = mongoose.model('algorithm', algorithmSchema);
