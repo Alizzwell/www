@@ -30,6 +30,10 @@ angular.module('algorithms.view',
     onChange(scheduler, info);
   });
 
+  scheduler.on('end', function () {
+    onFinish(scheduler);
+  });
+
   function getAlgoData(id) {
     $http.get('/api/algorithms/' + id)
     .then(function success(res, status) {
