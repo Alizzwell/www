@@ -69,7 +69,7 @@
 			.attr("y",115)
 			.attr("fill","black");
 		
-		var distance = (300-(rectHeight+padding)*top)-100;
+		var distance = (300-(rectHeight+padding)*(top - 1))-100;
 		newElem.transition()
 			.attr("transform","translate(0,"+distance+")")
 			.duration(duration)
