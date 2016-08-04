@@ -83,7 +83,8 @@
 						<input type="text" ng-model="data.targets" ng-readonly="true" class="form-control">
 						<span>code</span>
 						<textarea id="outputEdit" ng-init="initOutputEdit()"></textarea>
-						<button type="button" class="btn btn-primary" ng-click=btnStepClk()>Step</button>
+						<button type="button" class="btn btn-primary" ng-click="btnStepClk()">Step</button>
+						<button type="button" class="btn btn-primary" ng-click="btnNextClk()">Next</button>
 					</div>
 					<div class="col-md-9" ng-init="initCanvas()" id="canvas">
 					</div>
@@ -102,7 +103,7 @@
 		<%- include /d3samples/stack.ejs -%>
 	<%
 	}
-	else if (id == "57a2fb5e2eed94100a0f97ac") {
+	else if (id == "57a35342a07ed3d0075b9d8c") {
 	%>
 		<%- include /d3samples/graph.ejs -%>
 	<%

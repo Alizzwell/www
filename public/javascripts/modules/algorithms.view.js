@@ -26,7 +26,6 @@ angular.module('algorithms.view',
   });
 
   scheduler.on('change', function (info) {
-    // console.log(JSON.stringify(info));
     onChange(scheduler, info);
   });
 
@@ -94,11 +93,40 @@ angular.module('algorithms.view',
       lineNumbers: true,
       lineWrapping: true,
       styleSelectedText: true,
-      readOnly: true
+      readOnly: true,
+      gutters: ["CodeMirror-linenumbers", "breakpoints"]
+    });
+
+    $scope.outputEdit.on("gutterClick", function(cm, n) {
+      var info = cm.lineInfo(n);
+      
+      if (!info) {
+        return;
+      }
+
+      if (info.gutterMarkers) {
+        cm.setGutterMarker(n, "breakpoints", null);  
+        var pos = $scope.breakp.indexOf(n + 1);
+        $scope.breakp.remove(pos, pos);
+      }
+      else {
+        var marker = document.createElement("div");
+        marker.style.color = "#933";
+        marker.innerHTML = "●";
+        cm.setGutterMarker(n, "breakpoints", marker);  
+        $scope.breakp.push(n + 1);
+      }
     });
     
     $scope.outputEdit.setValue($scope.data.code);
     markLine(scheduler.getLine() - 1);
+
+    $scope.breakp.forEach(function (bp) {
+      var marker = document.createElement("div");
+      marker.style.color = "#933";
+      marker.innerHTML = "●";
+      $scope.outputEdit.setGutterMarker(bp - 1, "breakpoints", marker);
+    });
   }
 
   function initCanvas() {
@@ -111,8 +139,8 @@ angular.module('algorithms.view',
     var dataObject = {
       "targets": $scope.data.targets.split(' '),
       "input": $scope.data.inputData,
-      "code": $scope.data.code,
-      "bps": $scope.breakp  // TODO: 기능 구현
+      "code": $scope.data.code
+      // "bps": $scope.breakp 
     };
 
     $http({
@@ -126,6 +154,7 @@ angular.module('algorithms.view',
         $scope.page = "view";
         $scope.data.code = data.code;
         scheduler.bind(data.data);
+        scheduler.breaks = $scope.breakp;
       }
       else {
         alert('error!! (' + status + ')')
@@ -140,6 +169,10 @@ angular.module('algorithms.view',
     scheduler.step();
   }
 
+  function btnNextClk() {
+    scheduler.next();
+  }
+
   var markText;
   function markLine(n) {
     if (markText) markText.clear();
@@ -152,5 +185,6 @@ angular.module('algorithms.view',
   $scope.initOutputEdit = initOutputEdit;
   $scope.initCanvas = initCanvas;
   $scope.btnStepClk = btnStepClk;
+  $scope.btnNextClk = btnNextClk;
 
 });

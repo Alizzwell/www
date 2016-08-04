@@ -187,7 +187,7 @@ module.exports = function(app, Algorithm, Problem) {
 	코드 업로드 & 실행 & json으로 response
 	*/
 	app.post('/api/execute', function(req, res) {
-		var code = req.body.code + "\n\n";
+		var code = req.body.code;
 		var targets = req.body.targets;
 		var input = req.body.input;
 		var bps = req.body.bps;
@@ -202,7 +202,7 @@ module.exports = function(app, Algorithm, Problem) {
 			function (cb) {
 				fs.writeFile(
 					sourcePath + filenameIndex + '.cpp',
-					code,
+					code + "\n\n",
 					cb
 				);
 			},
@@ -239,10 +239,17 @@ module.exports = function(app, Algorithm, Problem) {
 						cmd += ' ';
 					}
 				}
+				else {
+					var size = code.split('\n').length;
+					cmd += '--breaks ';
+					for (var i = 1; i <= size; i++) {
+						cmd += i;
+						cmd += ' ';
+					}
+				}
 				
 				cmd += '--input ';
 				cmd += (sourcePath + filenameIndex + '.txt');
-				
 				exec(cmd, cb);
 			},
 			function (stdout, stderr, cb) {
