@@ -245,7 +245,10 @@ module.exports = function(app, Algorithm, Problem) {
 			},
 			function (stdout, stderr, cb) {
 				filenameIndex++;
-				res.status(201).json(JSON.parse(stdout));
+				res.status(201).json({
+					"code": code,
+					"data": JSON.parse(stdout)
+				});
 			}
 		], function (err) {
 			if (err) {

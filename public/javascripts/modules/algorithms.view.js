@@ -94,6 +94,8 @@ angular.module('algorithms.view',
   }
   
   function btnUploadClk() {
+    $scope.data.code = $scope.inputEdit.getValue();
+
     var dataObject = {
       "targets": $scope.data.targets.split(' '),
       "input": $scope.data.inputData,
@@ -110,7 +112,8 @@ angular.module('algorithms.view',
     .success(function(data, status) {
       if (status == 201) {
         $scope.page = "view";
-        scheduler.bind(data);
+        $scope.data.code = data.code;
+        scheduler.bind(data.data);
       }
       else {
         alert('error!! (' + status + ')')
