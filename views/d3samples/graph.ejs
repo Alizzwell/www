@@ -35,7 +35,7 @@
 	    selected_link = null;
 
 	var width = 960,
-    	height = 500;
+	    height = 500;
 
 	function tick() {
 	  link.attr("x1", function(d) { return d.source.x; })
@@ -44,7 +44,7 @@
 	      .attr("y2", function(d) { return d.target.y; });
 
 	  node.attr("cx", function(d) { return d.x; })
-	      .attr("cy", function(d) { return d.y; });
+		  .attr("cy", function(d) { return d.y; });
 	}
 
 	// rescale g
@@ -81,16 +81,16 @@
 
 	  node.exit().transition()
 	      .attr("r", 0)
-	    .remove();
+	      .remove();
 
 	  node
 	    .classed("node_selected", function(d) { 
-	    	for (var i = 0; i < selected_nodes.length; i++) {
-	    		if (d === selected_nodes[i]) {
-	    			return true;
-	    		}
-	    	}
-	    	return false; 
+		for (var i = 0; i < selected_nodes.length; i++) {
+			if (d === selected_nodes[i]) {
+				return true;
+			}
+		}
+		return false; 
 	    });
 
 	  force.start();
@@ -99,21 +99,21 @@
 	function onBind(scheduler) {
 		// init svg
 		var outer = d3.select("#canvas")
-		  .append("svg:svg")
-		    .attr("width", width)
-		    .attr("height", height)
-		    .attr("pointer-events", "all");
+			.append("svg:svg")
+			.attr("width", width)
+			.attr("height", height)
+			.attr("pointer-events", "all");
 
 		vis = outer
-		  .append('svg:g')
-		    .call(d3.behavior.zoom().on("zoom", rescale))
-		    .on("dblclick.zoom", null)
-		  .append('svg:g');
+			.append('svg:g')
+			.call(d3.behavior.zoom().on("zoom", rescale))
+			.on("dblclick.zoom", null)
+			.append('svg:g');
 
 		vis.append('svg:rect')
-		    .attr('width', width)
-		    .attr('height', height)
-		    .attr('fill', 'white');
+			.attr('width', width)
+			.attr('height', height)
+			.attr('fill', 'white');
 
 		// init force layout
 		force = d3.layout.force()

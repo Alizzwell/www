@@ -2,53 +2,53 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 <style>
-	.axis path,
-	.axis line {
-		fill: none;
-		stroke: #000;
-		shape-rendering: crispEdges;
-	}
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
 
-	.bar {
-		fill: orange;
-	}
+.bar {
+	fill: orange;
+}
 
-	.bar:hover {
-		fill: orangered ;
-	}
+.bar:hover {
+	fill: orangered ;
+}
 
-	.x.axis path {
-		display: none;
-	}
+.x.axis path {
+	display: none;
+}
 
-	.d3-tip {
-		line-height: 1;
-		font-weight: bold;
-		padding: 12px;
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		border-radius: 2px;
-	}
+.d3-tip {
+	line-height: 1;
+	font-weight: bold;
+	padding: 12px;
+	background: rgba(0, 0, 0, 0.8);
+	color: #fff;
+	border-radius: 2px;
+}
 
-	/* Creates a small triangle extender for the tooltip */
-	.d3-tip:after {
-		box-sizing: border-box;
-		display: inline;
-		font-size: 10px;
-		width: 100%;
-		line-height: 1;
-		color: rgba(0, 0, 0, 0.8);
-		content: "\25BC";
-		position: absolute;
-		text-align: center;
-	}
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+	box-sizing: border-box;
+	display: inline;
+	font-size: 10px;
+	width: 100%;
+	line-height: 1;
+	color: rgba(0, 0, 0, 0.8);
+	content: "\25BC";
+	position: absolute;
+	text-align: center;
+}
 
-	/* Style northward tooltips differently */
-	.d3-tip.n:after {
-		margin: -1px 0 0 0;
-		top: 100%;
-		left: 0;
-	}
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+	margin: -1px 0 0 0;
+	top: 100%;
+	left: 0;
+}
 </style>
 
 <script>
@@ -70,7 +70,7 @@
 		y = d3.scale
 			.linear()
 			.range([height, 0]);
-								
+									
 		var xAxis = d3.svg.axis()
 			.scale(x)
 			.orient("bottom");
@@ -83,10 +83,10 @@
 			});
 
 		svg = d3.select("#canvas").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		svg.call(tip);
 
@@ -103,15 +103,15 @@
 		for (var i = 0; i < arr.length; i++) {
 			indexes.push(i);
 		}
-								    
+									    
 		x.domain(indexes);
 		y.domain([0, d3.max(arr)]);
-							    
+								    
 		svg.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
 			.call(xAxis);
-								    
+									    
 		svg.selectAll(".bar")
 			.data(arr)
 			.enter().append("rect")
@@ -122,7 +122,7 @@
 			.attr("height", function(d) { return height - y(d); })
 			.on('mouseover', tip.show)
 			.on('mouseout', tip.hide);
-								    
+									    
 		svg.select(".x.axis")
 			.selectAll("text")
 			.style("font-size", "10px");
@@ -134,13 +134,27 @@
 	}
 
 	function onChange(scheduler, info) {
-		console.log(JSON.stringify(info));
-		update(info['A'].data);
+		console.log(scheduler.getTargets());
+		if (info['s1'] || info['s2']) {
+			swap(scheduler.getTarget('A').data, 
+				scheduler.getTarget('s1').data, 
+				scheduler.getTarget('s2').data);
+		}
+		else if (info['A']) {
+			update(info['A'].data);
+		}
+	}
+
+	function onFinish() {
+		svg.selectAll(".bar")
+			.style("fill", function(d, idx) {
+				return "orange";
+			});
 	}
 
 	function update(arr) {
 		y.domain([0, d3.max(arr)]);
-							    
+								    
 		svg.selectAll(".bar")
 			.data(arr)
 			.transition()
@@ -150,4 +164,29 @@
 			.attr("height", function(d) { return height - y(d); });
 	}
 
+	var last;
+	function swap(arr, i, j) {
+		svg.selectAll(".bar")
+			.data(arr)
+			.style("fill", function(d, idx) {
+				if (idx == i || idx == j)
+					return "orchid";
+			})
+			.transition()
+			.duration(duration)
+			.attr("x", function(d, idx) { 
+				if (idx == i)
+					return x(j);
+				else if (idx == j)
+					return x(i);
+				else
+					return x(idx);
+			})
+			.each("end", function(d, idx) {
+					svg.selectAll(".bar")
+						.attr("x", function(d, idx) { return x(idx); })
+						.attr("y", function(d) { return y(d); })
+					.attr("height", function(d) { return height - y(d); });
+			});
+	}
 </script>
